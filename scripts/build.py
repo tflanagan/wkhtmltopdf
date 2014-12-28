@@ -67,7 +67,6 @@ QT_CONFIG = {
         '-system-libpng',
         '-system-libjpeg',
         '-no-libmng',
-        '-no-libtiff',
         '-no-accessibility',
         '-no-stl',
         '-no-qt3support',
@@ -105,6 +104,7 @@ QT_CONFIG = {
         '-no-style-plastique',
         '-no-style-motif',
         '-no-style-cde',
+        '-no-libtiff',
         '-openssl-linked'           # static linkage for OpenSSL
     ],
 
@@ -114,6 +114,7 @@ QT_CONFIG = {
         '-largefile',
         '-iconv',                   # iconv support is required for text codecs
         '-openssl',                 # load OpenSSL binaries at runtime
+        '-system-libtiff',
         '-no-rpath',
         '-no-dbus',
         '-no-nis',
@@ -149,6 +150,7 @@ QT_CONFIG = {
         '-openssl-linked',          # static linkage for OpenSSL
         '-no-reduce-exports',
         '-no-rpath',
+        '-no-libtiff',
         '-xplatform win32-g++-4.6'
     ],
 
@@ -159,6 +161,7 @@ QT_CONFIG = {
         '-xrender',                 # xrender support is required
         '-openssl',                 # load OpenSSL binaries at runtime
         '-largefile',
+        '-no-libtiff',
         '-no-rpath'
     ]
 }
@@ -183,7 +186,7 @@ FPM_SETUP = {
         '--provides':        'wkhtmltopdf',
         '--conflicts':       'wkhtmltopdf',
         '--replaces':        'wkhtmltopdf',
-        '--depends':         ['fontconfig', 'libfontconfig1', 'libfreetype6', 'libpng12-0', 'zlib1g', 'libjpeg8', 'libssl1.0.0',
+        '--depends':         ['fontconfig', 'libfontconfig1', 'libfreetype6', 'libpng12-0', 'zlib1g', 'libjpeg8', 'libtiff5', 'libssl1.0.0',
                               'libx11-6', 'libxext6', 'libxrender1', 'xfonts-base', 'xfonts-75dpi', 'libstdc++6', 'libc6']
     },
     'jessie': {
@@ -192,7 +195,7 @@ FPM_SETUP = {
         '--provides':        'wkhtmltopdf',
         '--conflicts':       'wkhtmltopdf',
         '--replaces':        'wkhtmltopdf',
-        '--depends':         ['fontconfig', 'libfontconfig1', 'libfreetype6', 'libpng12-0', 'zlib1g', 'libjpeg62-turbo', 'libssl1.0.0',
+        '--depends':         ['fontconfig', 'libfontconfig1', 'libfreetype6', 'libpng12-0', 'zlib1g', 'libjpeg62-turbo', 'libtiff5', 'libssl1.0.0',
                               'libx11-6', 'libxext6', 'libxrender1', 'xfonts-base', 'xfonts-75dpi', 'libstdc++6', 'libc6']
     },
     'trusty': {
@@ -201,7 +204,7 @@ FPM_SETUP = {
         '--provides':        'wkhtmltopdf',
         '--conflicts':       'wkhtmltopdf',
         '--replaces':        'wkhtmltopdf',
-        '--depends':         ['fontconfig', 'libfontconfig1', 'libfreetype6', 'libpng12-0', 'zlib1g', 'libjpeg-turbo8', 'libssl1.0.0',
+        '--depends':         ['fontconfig', 'libfontconfig1', 'libfreetype6', 'libpng12-0', 'zlib1g', 'libjpeg-turbo8', 'libtiff5', 'libssl1.0.0',
                               'libx11-6', 'libxext6', 'libxrender1', 'xfonts-base', 'xfonts-75dpi', 'libstdc++6', 'libc6']
     },
     'precise': {
@@ -210,28 +213,28 @@ FPM_SETUP = {
         '--provides':        'wkhtmltopdf',
         '--conflicts':       'wkhtmltopdf',
         '--replaces':        'wkhtmltopdf',
-        '--depends':         ['fontconfig', 'libfontconfig1', 'libfreetype6', 'libpng12-0', 'zlib1g', 'libjpeg8', 'libssl1.0.0',
+        '--depends':         ['fontconfig', 'libfontconfig1', 'libfreetype6', 'libpng12-0', 'zlib1g', 'libjpeg8', 'libtiff4', 'libssl1.0.0',
                               'libx11-6', 'libxext6', 'libxrender1', 'xfonts-base', 'xfonts-75dpi', 'libstdc++6', 'libc6']
     },
     'centos5': {
         '-t':                'rpm',
         '--epoch':           '1',
         '--rpm-compression': 'bzip2',
-        '--depends':         ['fontconfig', 'freetype', 'libpng', 'zlib', 'libjpeg', 'openssl', 'libstdc++', 'glibc',
+        '--depends':         ['fontconfig', 'freetype', 'libpng', 'zlib', 'libjpeg', 'libtiff', 'openssl', 'libstdc++', 'glibc',
                               'libX11', 'libXext', 'libXrender', 'xorg-x11-fonts-Type1', 'xorg-x11-fonts-75dpi']
     },
     'centos6': {
         '-t':                'rpm',
         '--epoch':           '1',
         '--rpm-compression': 'bzip2',
-        '--depends':         ['fontconfig', 'freetype', 'libpng', 'zlib', 'libjpeg', 'openssl', 'libstdc++', 'glibc',
+        '--depends':         ['fontconfig', 'freetype', 'libpng', 'zlib', 'libjpeg', 'libtiff', 'openssl', 'libstdc++', 'glibc',
                               'libX11', 'libXext', 'libXrender', 'xorg-x11-fonts-Type1', 'xorg-x11-fonts-75dpi']
     },
     'centos7': {
         '-t':                'rpm',
         '--epoch':           '1',
         '--rpm-compression': 'xz',
-        '--depends':         ['fontconfig', 'freetype', 'libpng', 'zlib', 'libjpeg-turbo', 'openssl', 'libstdc++', 'glibc',
+        '--depends':         ['fontconfig', 'freetype', 'libpng', 'zlib', 'libjpeg-turbo', 'libtiff', 'openssl', 'libstdc++', 'glibc',
                               'libX11', 'libXext', 'libXrender', 'xorg-x11-fonts-Type1', 'xorg-x11-fonts-75dpi']
     },
     'osx': {
@@ -252,7 +255,7 @@ deb http://ftp.debian.org/debian/ wheezy-updates main contrib non-free
 deb http://security.debian.org/   wheezy/updates main contrib non-free"""),
         ('shell', 'apt-get update'),
         ('shell', 'apt-get dist-upgrade --assume-yes'),
-        ('shell', 'apt-get install --assume-yes xz-utils libssl-dev libpng-dev libjpeg8-dev zlib1g-dev rubygems'),
+        ('shell', 'apt-get install --assume-yes xz-utils libssl-dev libpng-dev libjpeg8-dev zlib1g-dev libtiff5-dev rubygems'),
         ('shell', 'apt-get install --assume-yes libfontconfig1-dev libfreetype6-dev libx11-dev libxext-dev libxrender-dev'),
         ('shell', 'gem install fpm --no-ri --no-rdoc'),
         ('write_file', 'update.sh', 'apt-get update\napt-get dist-upgrade --assume-yes\ngem update fpm\n'),
@@ -268,7 +271,7 @@ deb http://ftp.debian.org/debian/ jessie-updates main contrib non-free
 deb http://security.debian.org/   jessie/updates main contrib non-free"""),
         ('shell', 'apt-get update'),
         ('shell', 'apt-get dist-upgrade --assume-yes'),
-        ('shell', 'apt-get install --assume-yes xz-utils libssl-dev libpng-dev libjpeg62-turbo-dev zlib1g-dev rubygems ruby-dev'),
+        ('shell', 'apt-get install --assume-yes xz-utils libssl-dev libpng-dev libjpeg62-turbo-dev zlib1g-dev libtiff5-dev rubygems ruby-dev'),
         ('shell', 'apt-get install --assume-yes libfontconfig1-dev libfreetype6-dev libx11-dev libxext-dev libxrender-dev'),
         ('shell', 'gem install fpm --no-ri --no-rdoc'),
         ('write_file', 'update.sh', 'apt-get update\napt-get dist-upgrade --assume-yes\ngem update fpm\n'),
@@ -284,7 +287,7 @@ deb http://archive.ubuntu.com/ubuntu/ trusty-updates  main restricted universe m
 deb http://archive.ubuntu.com/ubuntu/ trusty-security main restricted universe multiverse"""),
         ('shell', 'apt-get update'),
         ('shell', 'apt-get dist-upgrade --assume-yes'),
-        ('shell', 'apt-get install --assume-yes xz-utils libssl-dev libpng-dev libjpeg-turbo8-dev zlib1g-dev ruby-dev'),
+        ('shell', 'apt-get install --assume-yes xz-utils libssl-dev libpng-dev libjpeg-turbo8-dev zlib1g-dev libtiff5-dev ruby-dev'),
         ('shell', 'apt-get install --assume-yes libfontconfig1-dev libfreetype6-dev libx11-dev libxext-dev libxrender-dev'),
         ('shell', 'gem install fpm --no-ri --no-rdoc'),
         ('write_file', 'update.sh', 'apt-get update\napt-get dist-upgrade --assume-yes\ngem update fpm\n'),
@@ -302,7 +305,7 @@ deb http://archive.ubuntu.com/ubuntu/ precise-updates  main restricted universe 
 deb http://archive.ubuntu.com/ubuntu/ precise-security main restricted universe multiverse"""),
         ('shell', 'apt-get update'),
         ('shell', 'apt-get dist-upgrade --assume-yes'),
-        ('shell', 'apt-get install --assume-yes xz-utils libssl-dev libpng-dev libjpeg8-dev zlib1g-dev rubygems'),
+        ('shell', 'apt-get install --assume-yes xz-utils libssl-dev libpng-dev libjpeg8-dev zlib1g-dev libtiff4-dev rubygems'),
         ('shell', 'apt-get install --assume-yes libfontconfig1-dev libfreetype6-dev libx11-dev libxext-dev libxrender-dev'),
         ('shell', 'gem install fpm --no-ri --no-rdoc'),
         ('write_file', 'update.sh', 'apt-get update\napt-get dist-upgrade --assume-yes\ngem update fpm\n'),
@@ -318,7 +321,7 @@ deb http://archive.ubuntu.com/ubuntu/ precise-security main restricted universe 
         ('shell', 'yum update -y'),
         ('append_file:amd64', 'etc/yum.conf', 'exclude = *.i?86\n'),
         ('shell', 'yum install -y gcc gcc-c++ make diffutils perl ruby-devel rubygems rpm-build libffi-devel'),
-        ('shell', 'yum install -y openssl-devel libX11-devel libXrender-devel libXext-devel fontconfig-devel freetype-devel libjpeg-devel libpng-devel zlib-devel'),
+        ('shell', 'yum install -y openssl-devel libX11-devel libXrender-devel libXext-devel fontconfig-devel freetype-devel libjpeg-devel libpng-devel zlib-devel libtiff-devel'),
         ('shell', 'gem install fpm --no-ri --no-rdoc'),
         ('write_file', 'update.sh', 'yum update -y\ngem update fpm\n'),
         ('fpm_setup',  'fpm_package.sh'),
@@ -330,7 +333,7 @@ deb http://archive.ubuntu.com/ubuntu/ precise-security main restricted universe 
         ('shell', 'yum update -y'),
         ('append_file:amd64', 'etc/yum.conf', 'exclude = *.i?86\n'),
         ('shell', 'yum install -y gcc gcc-c++ make diffutils perl ruby-devel rubygems rpm-build libffi-devel'),
-        ('shell', 'yum install -y openssl-devel libX11-devel libXrender-devel libXext-devel fontconfig-devel freetype-devel libjpeg-devel libpng-devel zlib-devel'),
+        ('shell', 'yum install -y openssl-devel libX11-devel libXrender-devel libXext-devel fontconfig-devel freetype-devel libjpeg-devel libpng-devel zlib-devel libtiff-devel'),
         ('shell', 'gem install fpm --no-ri --no-rdoc'),
         ('write_file', 'update.sh', 'yum update -y\ngem update fpm\n'),
         ('fpm_setup',  'fpm_package.sh'),
@@ -345,7 +348,7 @@ deb http://archive.ubuntu.com/ubuntu/ precise-security main restricted universe 
         ('shell', 'yum update -y'),
         ('append_file', 'etc/yum.conf', 'exclude = *.i?86\n'),
         ('shell', 'yum install -y gcc gcc-c++ make diffutils perl ruby-devel rubygems rpm-build libffi-devel'),
-        ('shell', 'yum install -y openssl-devel libX11-devel libXrender-devel libXext-devel fontconfig-devel freetype-devel libjpeg-turbo-devel libpng-devel zlib-devel'),
+        ('shell', 'yum install -y openssl-devel libX11-devel libXrender-devel libXext-devel fontconfig-devel freetype-devel libjpeg-turbo-devel libpng-devel zlib-devel libtiff-devel'),
         ('shell', 'gem install fpm --no-ri --no-rdoc'),
         ('write_file', 'update.sh', 'yum update -y\ngem update fpm\n'),
         ('fpm_setup',  'fpm_package.sh'),

@@ -32,6 +32,7 @@ v0.12.2 (2015-01-09)
 * **#1988**: fix footer spacing being ignored (and header spacing being used instead)
 * **#1992**: add support for CentOS 7 target
 * **#2055**: **[qt]** rendering of Thai symbols is very slow
+* **#2089**: enable TIFF support for the POSIX targets
 
 v0.12.1 (2014-06-26)
 --------------------
