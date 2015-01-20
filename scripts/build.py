@@ -239,7 +239,6 @@ deb http://security.debian.org/   wheezy/updates main contrib non-free"""),
         ('shell', 'apt-get install --assume-yes libfontconfig1-dev libfreetype6-dev libx11-dev libxext-dev libxrender-dev libxcb1-dev'),
         ('shell', 'gem install fpm --no-ri --no-rdoc'),
         ('write_file', 'update.sh', 'apt-get update\napt-get dist-upgrade --assume-yes\ngem update fpm\n'),
-        ('fpm_setup',  'fpm_package.sh'),
         ('schroot_conf', 'Debian Wheezy')
     ],
 
@@ -255,7 +254,6 @@ deb http://security.debian.org/   jessie/updates main contrib non-free"""),
         ('shell', 'apt-get install --assume-yes libfontconfig1-dev libfreetype6-dev libx11-dev libxext-dev libxrender-dev'),
         ('shell', 'gem install fpm --no-ri --no-rdoc'),
         ('write_file', 'update.sh', 'apt-get update\napt-get dist-upgrade --assume-yes\ngem update fpm\n'),
-        ('fpm_setup',  'fpm_package.sh'),
         ('schroot_conf', 'Debian Jessie')
     ],
 
@@ -271,7 +269,6 @@ deb http://archive.ubuntu.com/ubuntu/ trusty-security main restricted universe m
         ('shell', 'apt-get install --assume-yes libfontconfig1-dev libfreetype6-dev libx11-dev libxext-dev libxrender-dev'),
         ('shell', 'gem install fpm --no-ri --no-rdoc'),
         ('write_file', 'update.sh', 'apt-get update\napt-get dist-upgrade --assume-yes\ngem update fpm\n'),
-        ('fpm_setup',  'fpm_package.sh'),
         ('schroot_conf', 'Ubuntu Trusty')
     ],
 
@@ -289,7 +286,6 @@ deb http://archive.ubuntu.com/ubuntu/ precise-security main restricted universe 
         ('shell', 'apt-get install --assume-yes libfontconfig1-dev libfreetype6-dev libx11-dev libxext-dev libxrender-dev'),
         ('shell', 'gem install fpm --no-ri --no-rdoc'),
         ('write_file', 'update.sh', 'apt-get update\napt-get dist-upgrade --assume-yes\ngem update fpm\n'),
-        ('fpm_setup',  'fpm_package.sh'),
         ('schroot_conf', 'Ubuntu Precise')
     ],
 
@@ -304,7 +300,6 @@ deb http://archive.ubuntu.com/ubuntu/ precise-security main restricted universe 
         ('shell', 'yum install -y openssl-devel libX11-devel libXrender-devel libXext-devel fontconfig-devel freetype-devel libjpeg-devel libpng-devel zlib-devel'),
         ('shell', 'gem install fpm --no-ri --no-rdoc'),
         ('write_file', 'update.sh', 'yum update -y\ngem update fpm\n'),
-        ('fpm_setup',  'fpm_package.sh'),
         ('schroot_conf', 'CentOS 5')
     ],
 
@@ -316,7 +311,6 @@ deb http://archive.ubuntu.com/ubuntu/ precise-security main restricted universe 
         ('shell', 'yum install -y openssl-devel libX11-devel libXrender-devel libXext-devel fontconfig-devel freetype-devel libjpeg-devel libpng-devel zlib-devel'),
         ('shell', 'gem install fpm --no-ri --no-rdoc'),
         ('write_file', 'update.sh', 'yum update -y\ngem update fpm\n'),
-        ('fpm_setup',  'fpm_package.sh'),
         ('schroot_conf', 'CentOS 6')
     ],
 
@@ -331,7 +325,6 @@ deb http://archive.ubuntu.com/ubuntu/ precise-security main restricted universe 
         ('shell', 'yum install -y openssl-devel libX11-devel libXrender-devel libXext-devel fontconfig-devel freetype-devel libjpeg-turbo-devel libpng-devel zlib-devel'),
         ('shell', 'gem install fpm --no-ri --no-rdoc'),
         ('write_file', 'update.sh', 'yum update -y\ngem update fpm\n'),
-        ('fpm_setup',  'fpm_package.sh'),
         ('schroot_conf', 'CentOS 7')
     ],
 
@@ -852,12 +845,6 @@ def build_setup_schroot(config, basedir):
                     message("\rDownloading: %s [%d%%]" % (name, pct))
                 urllib.urlretrieve(command[1], loc, reporthook=hook)
                 message("\rDownloaded: %s%s\n" % (name, ' '*10))
-            elif name == 'fpm_setup':
-                args, cfg = fpm_setup(chroot)
-                cmd = '#!/bin/sh\nXZ_OPT=-9 fpm --force %s --package ../%s-$1_linux-%s-$2.%s .\n'
-                loc = os.path.join(root_dir, command[1])
-                open(loc, 'w').write(cmd % (args, cfg['--name'], chroot, cfg['-t']))
-                shell('chmod a+x %s' % loc)
             elif name == 'schroot_conf':
                 cfg = open('/etc/schroot/chroot.d/wkhtmltopdf-%s' % alias, 'w')
                 cfg.write('[wkhtmltopdf-%s]\n' % alias)
@@ -1102,6 +1089,7 @@ def chroot_build_linux_schroot(config, basedir):
 
     os.environ['SQLITE3SRCDIR']     = '%s/../qt/qtbase/src/3rdparty/sqlite' % basedir
     os.environ['WKHTMLTOX_VERSION'] = version
+    os.environ['XZ_OPT']            = '-9'
 
     build_qtmodule(qtdir, 'qtbase', 'make -j%d' % CPU_COUNT,
         '%s/../qt/qtbase/configure %s' % (basedir, qt_config('posix', '--prefix=%s/qtbase' % qtdir)))
@@ -1121,8 +1109,11 @@ def chroot_build_linux_schroot(config, basedir):
     shell('rm -f bin/*')
     shell('%s/qtbase/bin/qmake %s/../wkhtmltopdf.pro' % (qtdir, basedir))
     shell('make install INSTALL_ROOT=%s' % dist)
+
     os.chdir(os.path.join(basedir, config))
-    shell('/fpm_package.sh %s %s' % (version, config[1+config.index('-'):]))
+    fpm_args, fpm_cfg = fpm_setup(config[:config.index('-')])
+    shell('fpm --force %s --package ../%s-%s_linux-%s.%s .' % (
+        fpm_args.replace('$1', version), fpm_cfg['--name'], version, config, fpm_cfg['-t']))
 
 # -------------------------------------------------- POSIX local environment
 
