@@ -81,6 +81,9 @@ struct DLL_PUBLIC LoadPage {
 	//! What window.status value should we wait for
 	QString windowStatus;
 
+	//! Dump rendered HTML to a directory
+	QString dumpHtmlDir;
+
 	//! What zoom factor should we apply when printing
 	// TODO MOVE
 	float zoomFactor;

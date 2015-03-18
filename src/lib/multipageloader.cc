@@ -26,6 +26,7 @@
 
 #include "multipageloader_p.hh"
 #include <QFile>
+#include <QDir>
 #include <QFileInfo>
 #include <QNetworkCookie>
 #include <QNetworkDiskCache>
@@ -284,6 +285,8 @@ void ResourceObject::loadDone() {
 	if (finished) return;
 	finished=true;
 
+	dumpHtml();
+
 	// Ensure no more loading goes..
 	webPage.triggerAction(QWebPage::Stop);
 	webPage.triggerAction(QWebPage::StopScheduledPageRefresh);
@@ -293,6 +296,41 @@ void ResourceObject::loadDone() {
 	--multiPageLoader.loading;
 	if (multiPageLoader.loading == 0)
 		multiPageLoader.loadDone();
+}
+
+void ResourceObject::dumpHtml() {
+	if (!settings.dumpHtmlDir.isEmpty()) {
+		QUrl url = webPage.mainFrame()->requestedUrl();
+		QString host = url.host();
+		QString path = url.path();
+
+		// If path starts with current path, strip this away
+		if (path.startsWith(QDir::currentPath())) {
+			path.replace(0, QDir::currentPath().size(), "");
+		}
+
+		// Strip leading slashes from path
+		while (path.startsWith("/")) {
+			path.replace(0, 1, "");
+		}
+
+		// If path is empty, use "index"
+		QFileInfo fileInfo(settings.dumpHtmlDir+"/"+host+"/"+(path.isEmpty() ? "index" : path)+".html");
+
+		QDir baseDir("");
+		if (!baseDir.exists(fileInfo.path())) {
+			baseDir.mkpath(fileInfo.path());
+		}
+
+		QFile htmlFile(fileInfo.filePath());
+		if (htmlFile.open(QFile::WriteOnly | QFile::Truncate)) {
+			QTextStream out(&htmlFile);
+			out << webPage.mainFrame()->toHtml();
+			htmlFile.close();
+		} else {
+			error(QString("Cannot open file "+htmlFile.fileName()+" for writing"));
+		}
+	}
 }
 
 /*!
