@@ -299,7 +299,7 @@ void ResourceObject::loadDone() {
 }
 
 void ResourceObject::dumpHtml() {
-	if (!settings.dumpHtmlDir.isEmpty()) {
+	if (!settings.dumpHtml.isEmpty()) {
 		QUrl url = webPage.mainFrame()->requestedUrl();
 		QString host = url.host();
 		QString path = url.path();
@@ -314,8 +314,7 @@ void ResourceObject::dumpHtml() {
 			path.replace(0, 1, "");
 		}
 
-		// If path is empty, use "index"
-		QFileInfo fileInfo(settings.dumpHtmlDir+"/"+host+"/"+(path.isEmpty() ? "index" : path)+".html");
+		QFileInfo fileInfo(settings.dumpHtml);
 
 		QDir baseDir("");
 		if (!baseDir.exists(fileInfo.path())) {

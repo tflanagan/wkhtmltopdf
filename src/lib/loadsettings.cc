@@ -143,7 +143,7 @@ LoadGlobal::LoadGlobal():
 LoadPage::LoadPage():
 	jsdelay(200),
 	windowStatus(""),
-	dumpHtmlDir(""),
+	dumpHtml(""),
 	cacheDir(""),
 	zoomFactor(1.0),
 	repeatCustomHeaders(false),
